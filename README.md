@@ -22,9 +22,9 @@
 
 ### Enter Your Git Account Info
 
-Open a new CMD and type the following:
-git config --global user.name \[WhateverYourGitHubUsernameIs]
-git config --global user.email \[WhateverYourGitHubEmailIs]
+Open a new CMD and type the following: <br>
+git config --global user.name \[WhateverYourGitHubUsernameIs] <br>
+git config --global user.email \[WhateverYourGitHubEmailIs] 
 
 ## Get the Unity Project Using Git
 
