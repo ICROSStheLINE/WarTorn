@@ -69,5 +69,29 @@ git config --global user.email \[WhateverYourGitHubEmailIs]
 ### Commit and Push
 <img width="500" height="350" alt="image" src="https://github.com/user-attachments/assets/67abd868-35a8-44de-a7a5-be5012194950" />
 
+# How to Receive Your Collaborators' Saved Changes (Pulling Commits)
+
+## Using CMD 
+
+### Type "cd WarTorn" for CMD to Open that Directory
+<img width="416" height="186" alt="image" src="https://github.com/user-attachments/assets/63f675a1-74ab-43b2-970c-e6deb5354bfb" />
+
+### Type "git pull"
+<img width="800" height="531" alt="image" src="https://github.com/user-attachments/assets/98564b90-d610-4285-abac-11885065ad60" />
+<br> 
+~~~ Note ~~~<br>
+Note that it might not properly pull in the changes due to there being a "merge conflict". <br>
+This basically means that you and someone else worked on the same thing at the same time and Git doesn't know which one to override over the other. <br>
+This means you'll have to do some manual work to try and merge both changes together. <br>
+If this happens contact one of the programmers as they have a lot of experience with this kind of thing. <br>
+~~~~~~~~~~~~
+
+## Using GitHub Desktop App
+
+### Literally just click this like once or twice
+<img width="928" height="291" alt="image" src="https://github.com/user-attachments/assets/99ef8aad-f968-4219-9a58-4d5ba0c29d07" />
+
+
+
 
 
