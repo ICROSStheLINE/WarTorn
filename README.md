@@ -59,10 +59,13 @@ git config --global user.email \[WhateverYourGitHubEmailIs]
 
 ### Add the Existing Repo to it
 <img width="1200" height="350" alt="Untitled" src="https://github.com/user-attachments/assets/ee2a7986-5b9a-4487-a703-2af4df2a10d3" />
+
 ### Add the Files You Want to Prepare to Save (Commit)
 <img width="500" height="350" alt="Untitled" src="https://github.com/user-attachments/assets/f56306ec-80b5-4a63-8c2e-746a9b8c5c82" />
+
 ### Add the Message You Want with the Commit
 <img width="500" height="350" alt="Untitled" src="https://github.com/user-attachments/assets/2fa762fb-274b-4f3d-86a1-e518a9ca11af" />
+
 ### Commit and Push
 <img width="500" height="350" alt="image" src="https://github.com/user-attachments/assets/67abd868-35a8-44de-a7a5-be5012194950" />
 
