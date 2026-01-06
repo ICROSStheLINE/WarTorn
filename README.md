@@ -77,7 +77,7 @@ git config --global user.email \[WhateverYourGitHubEmailIs]
 <img width="416" height="186" alt="image" src="https://github.com/user-attachments/assets/63f675a1-74ab-43b2-970c-e6deb5354bfb" />
 
 ### Type "git pull"
-<img width="800" height="531" alt="image" src="https://github.com/user-attachments/assets/98564b90-d610-4285-abac-11885065ad60" />
+<img width="416" height="186" alt="image" src="https://github.com/user-attachments/assets/98564b90-d610-4285-abac-11885065ad60" />
 <br> 
 ~~~ Note ~~~<br>
 Note that it might not properly pull in the changes due to there being a "merge conflict". <br>
