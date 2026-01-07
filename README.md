@@ -6,7 +6,7 @@
 
 <img width="974" height="423" alt="Download Git" src="https://github.com/user-attachments/assets/e54389d7-56b5-4b86-b657-8d3a059313a0" />
 
-** Use the following setup settings **
+**Use the following setup settings**
 
 <img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/a55ad9e6-44b2-4bc4-bd56-ab2693a3e0ba" />
 <img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/b179496b-31e0-49fc-a98d-6344095c744d" />
@@ -20,19 +20,19 @@
 <img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/b26baae7-c99b-40a0-a4d6-527df1b9a072" />
 <img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/66c2ec4a-8235-449a-a16e-a9b97b3aebb1" />
 
-** Enter Your Git Account Info **
+**Enter Your Git Account Info**
 
 - Open a new CMD and type the following: <br>
-git config --global user.name \[WhateverYourGitHubUsernameIs] <br>
-git config --global user.email \[WhateverYourGitHubEmailIs] 
+`git config --global user.name \[WhateverYourGitHubUsernameIs]` <br>
+`git config --global user.email \[WhateverYourGitHubEmailIs]` 
 
 ## Get the Unity Project Using Git
 
-** Open CMD and type "git clone https://github.com/ICROSStheLINE/WarTorn.git" to Clone the Repository **
+**Open CMD and type "git clone https://github.com/ICROSStheLINE/WarTorn.git" to Clone the Repository**
 
 <img width="1000" height="300" alt="Clone Repo" src="https://github.com/user-attachments/assets/1f075f12-0407-46fc-af5f-0847f7828983" />
 
-** Set it up in Unity Hub **
+**Set it up in Unity Hub**
 
 - Open Unity Hub
 - Click Add
@@ -43,16 +43,16 @@ git config --global user.email \[WhateverYourGitHubEmailIs]
 
 ## Using CMD
 
-** Type "cd WarTorn" For CMD to Open That Directory **
+**Type "cd WarTorn" For CMD to Open That Directory**
 <img width="416" height="186" alt="image" src="https://github.com/user-attachments/assets/63f675a1-74ab-43b2-970c-e6deb5354bfb" />
 
-** Type `git add .` **
+**Type `git add .`**
 <img width="416" height="186" alt="image" src="https://github.com/user-attachments/assets/2fa152d0-1ab7-4d32-8317-9b0b74b464ee" />
 
-** Type `git commit -m 'Whatever Your Commit Message Is'` **
+**Type `git commit -m 'Whatever Your Commit Message Is'`**
 <img width="432" height="186" alt="image" src="https://github.com/user-attachments/assets/596d9fb9-6b4a-41b1-9950-96ca7c1e869c" />
 
-** Type `git push` **
+**Type `git push`**
 <img width="482" height="228" alt="image" src="https://github.com/user-attachments/assets/67bbfa70-e22f-4d64-9d6d-68f54926b95e" />
 
 ## Using GitHub Desktop App
