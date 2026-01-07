@@ -57,26 +57,26 @@
 
 ## Using GitHub Desktop App
 
-** Add the Existing Repo to it **
+**Add the Existing Repo to it**
 <img width="1200" height="350" alt="Untitled" src="https://github.com/user-attachments/assets/ee2a7986-5b9a-4487-a703-2af4df2a10d3" />
 
-** Add the Files You Want to Prepare to Save (Commit) **
+**Add the Files You Want to Prepare to Save (Commit)**
 <img width="500" height="350" alt="Untitled" src="https://github.com/user-attachments/assets/f56306ec-80b5-4a63-8c2e-746a9b8c5c82" />
 
-** Add the Message You Want with the Commit **
+**Add the Message You Want with the Commit**
 <img width="500" height="350" alt="Untitled" src="https://github.com/user-attachments/assets/2fa762fb-274b-4f3d-86a1-e518a9ca11af" />
 
-** Commit and Push **
+**Commit and Push**
 <img width="500" height="350" alt="image" src="https://github.com/user-attachments/assets/67abd868-35a8-44de-a7a5-be5012194950" />
 
 # How to Receive Your Collaborators' Saved Changes (Pulling Commits)
 
 ## Using CMD 
 
-** Type "cd WarTorn" for CMD to Open that Directory **
+**Type "cd WarTorn" for CMD to Open that Directory**
 <img width="416" height="186" alt="image" src="https://github.com/user-attachments/assets/63f675a1-74ab-43b2-970c-e6deb5354bfb" />
 
-** Type `git pull` **
+**Type `git pull`**
 <img width="416" height="186" alt="image" src="https://github.com/user-attachments/assets/98564b90-d610-4285-abac-11885065ad60" />
 <br> 
 ~~~ Note ~~~<br>
@@ -88,7 +88,7 @@ If this happens contact one of the programmers as they have a lot of experience 
 
 ## Using GitHub Desktop App
 
-** Literally just click this like once or twice **
+**Literally just click this like once or twice**
 <img width="928" height="291" alt="image" src="https://github.com/user-attachments/assets/99ef8aad-f968-4219-9a58-4d5ba0c29d07" />
 
 
