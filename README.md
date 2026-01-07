@@ -28,7 +28,7 @@
 
 ## Get the Unity Project Using Git
 
-**Open CMD and type "git clone https://github.com/ICROSStheLINE/WarTorn.git" to Clone the Repository** <br>
+**Open CMD and type `git clone https://github.com/ICROSStheLINE/WarTorn.git` to Clone the Repository** <br>
 
 <img width="1000" height="300" alt="Clone Repo" src="https://github.com/user-attachments/assets/1f075f12-0407-46fc-af5f-0847f7828983" />
 
@@ -43,7 +43,7 @@
 
 ## Using CMD
 
-**Type "cd WarTorn" For CMD to Open That Directory** <br>
+**Type `cd WarTorn` For CMD to Open That Directory** <br>
 <img width="416" height="186" alt="image" src="https://github.com/user-attachments/assets/63f675a1-74ab-43b2-970c-e6deb5354bfb" />
 
 **Type `git add .`** <br>
@@ -73,7 +73,7 @@
 
 ## Using CMD 
 
-**Type "cd WarTorn" for CMD to Open that Directory** <br>
+**Type `cd WarTorn` for CMD to Open that Directory** <br>
 <img width="416" height="186" alt="image" src="https://github.com/user-attachments/assets/63f675a1-74ab-43b2-970c-e6deb5354bfb" />
 
 **Type `git pull`** <br>
