@@ -34,6 +34,7 @@ public class ThirdPersonCameraController : MonoBehaviour
 
     void Awake()
     {
+        transform.parent = null;
         rotation = transform.rotation;
         lookAction = InputSystem.actions.FindAction("Look");
     }
@@ -50,5 +51,10 @@ public class ThirdPersonCameraController : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSmoothing);
         cameraTransform.localPosition = cameraOffset + new Vector3(0, 0, -distance);
         transform.position = Vector3.Lerp(transform.position, playerTransform.position, followingSmoothing);
+    }
+
+    public void EnableCamera(bool enable)
+    {
+        cameraTransform.gameObject.SetActive(enable);
     }
 }
