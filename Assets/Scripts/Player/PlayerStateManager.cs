@@ -176,6 +176,10 @@ public class PlayerStateManager : NetworkBehaviour
         controller.SetInputs(ref inputs);
     }
 
+    /// <summary>
+    /// Changes <see cref="ExampleCharacterController.MaxStableMoveSpeed "/> speed based on the sprinting parameter
+    /// </summary>
+    /// <param name="sprinting">Whether the player is sprinting or not</param>
     [ServerRpc]
     public void SetSprintingServerRpc(bool sprinting)
     {
@@ -187,5 +191,11 @@ public class PlayerStateManager : NetworkBehaviour
         {
             controller.MaxStableMoveSpeed = movementSpeed;
         }
+    }
+
+    [ServerRpc]
+    public void SetCrouchingServerRpc(bool crouching)
+    {
+        
     }
 }

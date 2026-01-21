@@ -19,9 +19,9 @@ public class PlayerGroundedState : PlayerBaseState
     /// </summary>
     private InputAction moveAction;
     private InputAction sprintAction;
+    private InputAction crouchAction;
 
     private static readonly float AnimationThreshold = 0.5f;
-    private static readonly float AnimationEpsilon = 0.1f;
 
     /// <summary>
     /// Called when entering the grounded state.
@@ -36,6 +36,7 @@ public class PlayerGroundedState : PlayerBaseState
 
         moveAction = InputSystem.actions.FindAction("Move");
         sprintAction = InputSystem.actions.FindAction("Sprint");
+        crouchAction = InputSystem.actions.FindAction("Crouch");
 
         animator = player.Animator;
     }
@@ -52,15 +53,15 @@ public class PlayerGroundedState : PlayerBaseState
         if (!player.IsOwner) return;
 
         Vector2 moveVector = moveAction.ReadValue<Vector2>();
-        float sprinting = sprintAction.ReadValue<float>();
 
         SendMovementToServer(player, moveVector);
-        bool isSprinting = sprinting > AnimationEpsilon && moveVector.y > AnimationThreshold && Mathf.Abs(moveVector.x) < AnimationThreshold;
+        bool isSprinting = sprintAction.IsPressed() && moveVector.y > AnimationThreshold && Mathf.Abs(moveVector.x) < AnimationThreshold;
+        bool isCrouching = crouchAction.IsPressed();
         // account for sprint in animation
         var animationMoveVector = new Vector2(moveVector.x, isSprinting ? moveVector.y * 2 : moveVector.y);
-        UpdateAnimations(player, animationMoveVector);
-        Debug.Log(animationMoveVector);
-        SendSprintingStateToServer(player, isSprinting);
+        UpdateAnimations(player, animationMoveVector, isCrouching);
+        SendSprintingStateToServer(player, isSprinting && !isCrouching);
+        SendCrouchingStateToServer(player, isCrouching);
     }
 
     /// <summary>
@@ -91,7 +92,7 @@ public class PlayerGroundedState : PlayerBaseState
     /// </summary>
     /// <param name="player">The player state manager.</param>
     /// <param name="moveVector">The movement input vector from the player.</param>
-    private void UpdateAnimations(PlayerStateManager player, Vector2 moveVector)
+    private void UpdateAnimations(PlayerStateManager player, Vector2 moveVector, bool crouching)
     {
         float newX = Mathf.Lerp(
             animator.GetFloat("VelocityX"),
@@ -107,10 +108,16 @@ public class PlayerGroundedState : PlayerBaseState
 
         animator.SetFloat("VelocityX", newX);
         animator.SetFloat("VelocityY", newY);
+        animator.SetBool("Crouching", crouching);
     }
 
     private void SendSprintingStateToServer(PlayerStateManager player, bool sprinting)
     {
         player.SetSprintingServerRpc(sprinting);
+    }
+
+    private void SendCrouchingStateToServer(PlayerStateManager player, bool crouching)
+    {
+        player.SetCrouchingServerRpc(crouching);
     }
 }
