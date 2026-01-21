@@ -1,19 +1,45 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Represents the player's grounded state.
+/// Handles movement input, sends movement data to the server,
+/// and updates animations while the player is on the ground.
+/// </summary>
 public class PlayerGroundedState : PlayerBaseState
 {
-    Animator animator;
-    InputAction moveAction;
+    /// <summary>
+    /// Cached reference to the player's Animator component.
+    /// </summary>
+    private Animator animator;
 
+    /// <summary>
+    /// Input action for reading movement input from the player.
+    /// </summary>
+    private InputAction moveAction;
+
+    /// <summary>
+    /// Called when entering the grounded state.
+    /// Initializes the movement input action and animator references.
+    /// </summary>
+    /// <param name="player">
+    /// The state manager controlling the player and handling state transitions.
+    /// </param>
     public override void EnterState(PlayerStateManager player)
     {
         if (!player.IsOwner) return;
 
         moveAction = InputSystem.actions.FindAction("Move");
-        animator = player.animator;
+        animator = player.Animator;
     }
 
+    /// <summary>
+    /// Called every frame while the player remains in the grounded state.
+    /// Reads player input, sends movement to the server, and updates animations.
+    /// </summary>
+    /// <param name="player">
+    /// The state manager controlling the player and handling state transitions.
+    /// </param>
     public override void UpdateState(PlayerStateManager player)
     {
         if (!player.IsOwner) return;
@@ -24,6 +50,11 @@ public class PlayerGroundedState : PlayerBaseState
         UpdateAnimations(player, moveVector);
     }
 
+    /// <summary>
+    /// Sends the player's movement input and target rotation to the server.
+    /// </summary>
+    /// <param name="player">The player state manager.</param>
+    /// <param name="moveVector">The movement input vector from the player.</param>
     private void SendMovementToServer(PlayerStateManager player, Vector2 moveVector)
     {
         if (moveVector.sqrMagnitude < 0.0001f)
@@ -31,16 +62,22 @@ public class PlayerGroundedState : PlayerBaseState
             moveVector = Vector2.zero;
         }
 
-
+        // Calculate the target rotation based on camera direction
         Quaternion targetRotation = Quaternion.Euler(
             0f,
-            player.thirdPersonCameraController.rotation.eulerAngles.y,
+            player.CameraController.CameraTransform.rotation.eulerAngles.y,
             0f
         );
 
+        // Submit movement input to the server
         player.SubmitMovementInputServerRpc(moveVector, targetRotation);
     }
 
+    /// <summary>
+    /// Updates animator parameters based on player input with smoothing.
+    /// </summary>
+    /// <param name="player">The player state manager.</param>
+    /// <param name="moveVector">The movement input vector from the player.</param>
     private void UpdateAnimations(PlayerStateManager player, Vector2 moveVector)
     {
         float newX = Mathf.Lerp(

@@ -1,123 +1,169 @@
+using System.Collections;
 using KinematicCharacterController;
 using KinematicCharacterController.Examples;
 using Unity.Netcode;
 using UnityEngine;
 
+/// <summary>
+/// Manages the player's finite state machine (FSM) states, movement, 
+/// animations, and network synchronization.
+/// Integrates with KinematicCharacterController for movement
+/// and Unity Netcode for GameObjects for multiplayer.
+/// </summary>
+[RequireComponent(typeof(ExampleCharacterController))]
+[RequireComponent(typeof(KinematicCharacterMotor))]
+[RequireComponent(typeof(CapsuleCollider))]
 public class PlayerStateManager : NetworkBehaviour
 {
+    // --- States ---
+    /// <summary>State when the player is in the air (jumping or falling).</summary>
     public PlayerAirborneState playerAirborneState = new();
+
+    /// <summary>State when the player is in a cinematic (cutscene) sequence.</summary>
     public PlayerCinematicState playerCinematicState = new();
+
+    /// <summary>State when the player is on the ground and can move freely.</summary>
     public PlayerGroundedState playerGroundedState = new();
+
+    /// <summary>The currently active player state.</summary>
     private PlayerBaseState currentState;
 
-    public float movementSpeed = 10.0f;
-    [Range(0, 1)] public float rotationSmoothing = 0.2f;
+    // --- Movement ---
+    [Header("Movement Settings")]
+    /// <summary>Player movement speed in units per second.</summary>
+    public float movementSpeed = 10f;
+
+    /// <summary>Smoothing factor for player rotation (0 = instant, 1 = slowest).</summary>
+    [Range(0, 1)] 
+    public float rotationSmoothing = 0.2f;
+
+    /// <summary>Smoothing factor for animation parameter updates.</summary>
     public float animationSmoothing = 0.2f;
 
-    public ThirdPersonCameraController thirdPersonCameraController;
-    public Animator animator;
+    // --- References ---
+    [Header("References")]
+    [SerializeField] private ThirdPersonCameraController thirdPersonCameraController;
 
-    public NetworkVariable<Vector3> NetPosition = new(writePerm: NetworkVariableWritePermission.Server);
-    public NetworkVariable<Quaternion> NetRotation = new(writePerm: NetworkVariableWritePermission.Server);
+    /// <summary>Read-only reference to the third-person camera controller.</summary>
+    public ThirdPersonCameraController CameraController => thirdPersonCameraController;
 
+    [SerializeField] private Animator animator;
+
+    /// <summary>Read-only reference to the player's animator component.</summary>
+    public Animator Animator => animator;
+
+    private ExampleCharacterController controller;
+    private KinematicCharacterMotor motor;
+
+    // --- Networking ---
+    [Header("Networking")]
+    /// <summary>Server-authoritative networked player position.</summary>
+    public NetworkVariable<Vector3> netPosition = new(writePerm: NetworkVariableWritePermission.Server);
+
+    /// <summary>Server-authoritative networked player rotation.</summary>
+    public NetworkVariable<Quaternion> netRotation = new(writePerm: NetworkVariableWritePermission.Server);
+
+    /// <summary>Speed at which remote players interpolate their position and rotation.</summary>
+    [SerializeField] private float networkLerpSpeed = 15f;
+
+    // --- Unity Events ---
+    /// <summary>
+    /// Called when the player object spawns on the network.
+    /// Initializes components, enables camera for owner, and sets initial state.
+    /// </summary>
     public override void OnNetworkSpawn()
     {
-        var kcc = GetComponent<ExampleCharacterController>();
-        var kcm = GetComponent<KinematicCharacterMotor>();
+        // Cache components
+        controller = GetComponent<ExampleCharacterController>();
+        motor = GetComponent<KinematicCharacterMotor>();
 
+        // Disable non-server controllers to prevent conflicts
         if (!IsServer)
         {
-            kcc.enabled = false;
-            kcm.enabled = false;
-        }
-        else
-        {
-            ResetServerInputs();
+            controller.enabled = false;
+            motor.enabled = false;
         }
 
-        if (!IsOwner)
-        {
-            // Disable camera & input for non-owners
-            return;
-        }
+        motor.SetPosition(transform.position);
 
+        if (!IsOwner) return;
+
+        // Enable camera and hide cursor for the local player
         thirdPersonCameraController.EnableCamera(true);
         Cursor.visible = false;
-        currentState = playerGroundedState;
+
+        // Start in grounded state
         ChangeState(playerGroundedState);
-
-        NetPosition.OnValueChanged += (oldPos, newPos) =>
-        {
-            if (!IsServer)
-                Debug.Log($"[CLIENT] Received pos {newPos}");
-        };
     }
 
-    void Update()
+    /// <summary>
+    /// Called every frame. Updates current state for the owner
+    /// or interpolates position/rotation for remote players.
+    /// </summary>
+    private void Update()
     {
-        if (IsOwner)
-        {
-            OwnerUpdate();
-        }
-
-        if (!IsOwner)
-        {
-            ClientUpdate();
-        }
+        if (IsOwner) currentState.UpdateState(this);
+        else ApplyRemoteState();
     }
 
-    void OwnerUpdate()
-    {
-        currentState.UpdateState(this);
-    }
-
-    void ClientUpdate()
-    {
-        ApplyRemoteState();
-    }
-
-    void ApplyRemoteState()
-    {
-        if (IsServer) return;
-
-        transform.SetPositionAndRotation(Vector3.Lerp(
-            transform.position,
-            NetPosition.Value,
-            15f * Time.deltaTime
-        ), Quaternion.Slerp(
-            transform.rotation,
-            NetRotation.Value,
-            15f * Time.deltaTime
-        ));
-    }
-
-
-    void LateUpdate()
+    /// <summary>
+    /// Updates networked position/rotation for the server each frame.
+    /// </summary>
+    private void LateUpdate()
     {
         if (!IsServer) return;
 
-        NetPosition.Value = transform.position;
-        NetRotation.Value = transform.rotation;
+        netPosition.Value = transform.position;
+        netRotation.Value = transform.rotation;
     }
 
-
-    public void ChangeState(PlayerBaseState state)
+    // --- State Management ---
+    /// <summary>
+    /// Changes the current FSM state to a new state.
+    /// Calls ExitState on the old state and EnterState on the new one.
+    /// </summary>
+    /// <param name="newState">The state to transition into.</param>
+    public void ChangeState(PlayerBaseState newState)
     {
         currentState?.ExitState(this);
-        currentState = state;
+        currentState = newState;
         currentState.EnterState(this);
     }
 
-    [Rpc(SendTo.Server)]
+    // --- Networking ---
+    /// <summary>
+    /// Applies position and rotation updates for non-owner players.
+    /// Interpolates between current transform and networked values.
+    /// </summary>
+    private void ApplyRemoteState()
+    {
+        if (IsServer) return;
+
+        transform.SetPositionAndRotation(
+            Vector3.Lerp(transform.position, netPosition.Value, networkLerpSpeed * Time.deltaTime),
+            Quaternion.Slerp(transform.rotation, netRotation.Value, networkLerpSpeed * Time.deltaTime)
+        );
+    }
+
+    /// <summary>
+    /// Server RPC called by the owner to submit movement input.
+    /// </summary>
+    /// <param name="move">2D movement vector from input.</param>
+    /// <param name="cameraRotation">Current camera rotation for direction.</param>
+    [ServerRpc]
     public void SubmitMovementInputServerRpc(Vector2 move, Quaternion cameraRotation)
     {
         ApplyMovement(move, cameraRotation);
     }
 
+    /// <summary>
+    /// Applies movement input to the KinematicCharacterController.
+    /// Converts Vector2 input and camera rotation into character movement.
+    /// </summary>
+    /// <param name="move">2D movement input vector.</param>
+    /// <param name="cameraRotation">Rotation of the camera to determine forward direction.</param>
     private void ApplyMovement(Vector2 move, Quaternion cameraRotation)
     {
-        var controller = GetComponent<ExampleCharacterController>();
-
         PlayerCharacterInputs inputs = new()
         {
             MoveAxisForward = move.y,
@@ -127,21 +173,4 @@ public class PlayerStateManager : NetworkBehaviour
 
         controller.SetInputs(ref inputs);
     }
-
-    private void ResetServerInputs()
-    {
-        var motor = GetComponent<KinematicCharacterMotor>();
-
-        var controller = GetComponent<ExampleCharacterController>();
-
-        PlayerCharacterInputs zeroInputs = new()
-        {
-            MoveAxisForward = 0f,
-            MoveAxisRight = 0f,
-            CameraRotation = Quaternion.identity
-        };
-
-        controller.SetInputs(ref zeroInputs);
-    }
-
 }

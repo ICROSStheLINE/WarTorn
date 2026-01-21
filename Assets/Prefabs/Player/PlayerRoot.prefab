@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 814907957
+  GlobalObjectIdHash: 1671726548
   InScenePlacedSourceGlobalObjectIdHash: 814907957
   DeferredDespawnTick: 0
   Ownership: 1
@@ -361,10 +361,11 @@ MonoBehaviour:
   animationSmoothing: 0.02
   thirdPersonCameraController: {fileID: 8273387697158327127}
   animator: {fileID: 1554556044101166853}
-  NetPosition:
+  netPosition:
     m_InternalValue: {x: 0, y: 0, z: 0}
-  NetRotation:
+  netRotation:
     m_InternalValue: {x: 0, y: 0, z: 0, w: 0}
+  spawnOffset: 2
 --- !u!114 &9113397262770338423
 MonoBehaviour:
   m_ObjectHideFlags: 0

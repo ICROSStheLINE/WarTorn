@@ -509,6 +509,7 @@ GameObject:
   - component: {fileID: 823354338}
   - component: {fileID: 823354337}
   - component: {fileID: 823354340}
+  - component: {fileID: 823354341}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -568,7 +569,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 92560c7b91e371b439c90b67e4099e38, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
+    ConnectionApproval: 1
     ConnectionData: 
     EnableTimeResync: 0
     TimeResyncInterval: 30
@@ -616,6 +617,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HelloWorldManager
   menuCamera: {fileID: 1550488312}
+--- !u!114 &823354341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823354336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb8070d8d2021e94797bb56f496defb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawner
 --- !u!1 &1550488309
 GameObject:
   m_ObjectHideFlags: 0
