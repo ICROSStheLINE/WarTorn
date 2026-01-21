@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1671726548
+  GlobalObjectIdHash: 814907957
   InScenePlacedSourceGlobalObjectIdHash: 814907957
   DeferredDespawnTick: 0
   Ownership: 1
@@ -358,6 +358,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   movementSpeed: 2
   runningSpeed: 8
+  sprintAcceleration: 0.1
   rotationSmoothing: 0.2
   animationSmoothing: 0.02
   thirdPersonCameraController: {fileID: 8273387697158327127}
@@ -608,4 +609,8 @@ MonoBehaviour:
       NameHash: -303020060
       Synchronize: 1
       ParameterType: 1
+    - name: Crouching
+      NameHash: -2032366093
+      Synchronize: 1
+      ParameterType: 4
   AnimatorParametersExpanded: 0

@@ -34,6 +34,8 @@ public class PlayerStateManager : NetworkBehaviour
     public float movementSpeed = 2f;
     /// <summary>Player running speed in units per second.</summary>
     public float runningSpeed = 8f;
+    /// <summary>Sprint acceleration/deceleration</summary>
+    public float sprintAcceleration = 0.1f;
 
     /// <summary>Smoothing factor for player rotation (0 = instant, 1 = slowest).</summary>
     [Range(0, 1)]
@@ -185,17 +187,17 @@ public class PlayerStateManager : NetworkBehaviour
     {
         if (sprinting)
         {
-            controller.MaxStableMoveSpeed = runningSpeed;
+            controller.MaxStableMoveSpeed = Mathf.Lerp(controller.MaxStableMoveSpeed, runningSpeed, sprintAcceleration);
         }
         else
         {
-            controller.MaxStableMoveSpeed = movementSpeed;
+            controller.MaxStableMoveSpeed = Mathf.Lerp(controller.MaxStableMoveSpeed, movementSpeed, sprintAcceleration);
         }
     }
 
     [ServerRpc]
     public void SetCrouchingServerRpc(bool crouching)
     {
-        
+
     }
 }
