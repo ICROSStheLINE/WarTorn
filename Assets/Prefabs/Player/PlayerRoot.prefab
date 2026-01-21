@@ -356,7 +356,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ShowTopMostFoldoutHeaderGroup: 1
-  movementSpeed: 0.1
+  movementSpeed: 2
+  runningSpeed: 8
   rotationSmoothing: 0.2
   animationSmoothing: 0.02
   thirdPersonCameraController: {fileID: 8273387697158327127}
@@ -365,7 +366,7 @@ MonoBehaviour:
     m_InternalValue: {x: 0, y: 0, z: 0}
   netRotation:
     m_InternalValue: {x: 0, y: 0, z: 0, w: 0}
-  spawnOffset: 2
+  networkLerpSpeed: 15
 --- !u!114 &9113397262770338423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,11 +479,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   sensitivity: 50
   rotationSmoothing: 0.2
-  pitchMin: -50
-  pitchMax: 50
-  rotation: {x: 0, y: 0, z: 0, w: 0}
+  followingSmoothing: 0.2
   distance: 3
   cameraOffset: {x: 0, y: 0, z: 0}
+  pitchMin: -50
+  pitchMax: 50
   cameraTransform: {fileID: 2533657973240108161}
   playerTransform: {fileID: 2033209862419754937}
 --- !u!1001 &6227721736719746401

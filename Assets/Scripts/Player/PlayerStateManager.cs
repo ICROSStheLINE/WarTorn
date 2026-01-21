@@ -30,11 +30,13 @@ public class PlayerStateManager : NetworkBehaviour
 
     // --- Movement ---
     [Header("Movement Settings")]
-    /// <summary>Player movement speed in units per second.</summary>
-    public float movementSpeed = 10f;
+    /// <summary>Player walking speed in units per second.</summary>
+    public float movementSpeed = 2f;
+    /// <summary>Player running speed in units per second.</summary>
+    public float runningSpeed = 8f;
 
     /// <summary>Smoothing factor for player rotation (0 = instant, 1 = slowest).</summary>
-    [Range(0, 1)] 
+    [Range(0, 1)]
     public float rotationSmoothing = 0.2f;
 
     /// <summary>Smoothing factor for animation parameter updates.</summary>
@@ -172,5 +174,18 @@ public class PlayerStateManager : NetworkBehaviour
         };
 
         controller.SetInputs(ref inputs);
+    }
+
+    [ServerRpc]
+    public void SetSprintingServerRpc(bool sprinting)
+    {
+        if (sprinting)
+        {
+            controller.MaxStableMoveSpeed = runningSpeed;
+        }
+        else
+        {
+            controller.MaxStableMoveSpeed = movementSpeed;
+        }
     }
 }

@@ -1,3 +1,4 @@
+using KinematicCharacterController.Examples;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +18,10 @@ public class PlayerGroundedState : PlayerBaseState
     /// Input action for reading movement input from the player.
     /// </summary>
     private InputAction moveAction;
+    private InputAction sprintAction;
+
+    private static readonly float AnimationThreshold = 0.5f;
+    private static readonly float AnimationEpsilon = 0.1f;
 
     /// <summary>
     /// Called when entering the grounded state.
@@ -30,6 +35,8 @@ public class PlayerGroundedState : PlayerBaseState
         if (!player.IsOwner) return;
 
         moveAction = InputSystem.actions.FindAction("Move");
+        sprintAction = InputSystem.actions.FindAction("Sprint");
+
         animator = player.Animator;
     }
 
@@ -45,9 +52,15 @@ public class PlayerGroundedState : PlayerBaseState
         if (!player.IsOwner) return;
 
         Vector2 moveVector = moveAction.ReadValue<Vector2>();
+        float sprinting = sprintAction.ReadValue<float>();
 
         SendMovementToServer(player, moveVector);
-        UpdateAnimations(player, moveVector);
+        bool isSprinting = sprinting > AnimationEpsilon && moveVector.y > AnimationThreshold && Mathf.Abs(moveVector.x) < AnimationThreshold;
+        // account for sprint in animation
+        var animationMoveVector = new Vector2(moveVector.x, isSprinting ? moveVector.y * 2 : moveVector.y);
+        UpdateAnimations(player, animationMoveVector);
+        Debug.Log(animationMoveVector);
+        SendSprintingStateToServer(player, isSprinting);
     }
 
     /// <summary>
@@ -94,5 +107,10 @@ public class PlayerGroundedState : PlayerBaseState
 
         animator.SetFloat("VelocityX", newX);
         animator.SetFloat("VelocityY", newY);
+    }
+
+    private void SendSprintingStateToServer(PlayerStateManager player, bool sprinting)
+    {
+        player.SetSprintingServerRpc(sprinting);
     }
 }
