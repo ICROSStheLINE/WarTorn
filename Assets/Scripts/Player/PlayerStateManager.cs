@@ -44,6 +44,11 @@ public class PlayerStateManager : NetworkBehaviour
     /// <summary>Smoothing factor for animation parameter updates.</summary>
     public float animationSmoothing = 0.2f;
 
+    /// <summary> Variable representing whether or not the player is CURRENTLY sprinting (not to be confused with just pressing the sprinting button) </summary>
+    [HideInInspector] public bool isSprinting = false;
+    /// <summary> Variable representing whether or not the player is CURRENTLY crouching (not to be confused with just pressing the crouching button) </summary>
+    [HideInInspector] public bool isCrouching = false;
+
     // --- References ---
     [Header("References")]
     [SerializeField] private ThirdPersonCameraController thirdPersonCameraController;
@@ -180,6 +185,8 @@ public class PlayerStateManager : NetworkBehaviour
     {
         if (!IsOwner) return;
 
+        isSprinting = sprinting;
+
         if (sprinting)
         {
             controller.MaxStableMoveSpeed = Mathf.Lerp(controller.MaxStableMoveSpeed, runningSpeed, sprintAcceleration);
@@ -192,6 +199,6 @@ public class PlayerStateManager : NetworkBehaviour
 
     public void SetCrouching(bool crouching)
     {
-
+        isCrouching = true;
     }
 }
