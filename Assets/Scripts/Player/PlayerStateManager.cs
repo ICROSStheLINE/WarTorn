@@ -199,6 +199,6 @@ public class PlayerStateManager : NetworkBehaviour
 
     public void SetCrouching(bool crouching)
     {
-        isCrouching = true;
+        isCrouching = crouching;
     }
 }
