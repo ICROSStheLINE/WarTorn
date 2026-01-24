@@ -61,11 +61,11 @@ public class PlayerStateManager : NetworkBehaviour
 
     // --- Networking ---
     [Header("Networking")]
-    /// <summary>Server-authoritative networked player position.</summary>
-    public NetworkVariable<Vector3> netPosition = new(writePerm: NetworkVariableWritePermission.Server);
+    /// <summary>Owner-authoritative networked player position.</summary>
+    public NetworkVariable<Vector3> netPosition = new(writePerm: NetworkVariableWritePermission.Owner);
 
-    /// <summary>Server-authoritative networked player rotation.</summary>
-    public NetworkVariable<Quaternion> netRotation = new(writePerm: NetworkVariableWritePermission.Server);
+    /// <summary>Owner-authoritative networked player rotation.</summary>
+    public NetworkVariable<Quaternion> netRotation = new(writePerm: NetworkVariableWritePermission.Owner);
 
     /// <summary>Speed at which remote players interpolate their position and rotation.</summary>
     [SerializeField] private float networkLerpSpeed = 15f;
@@ -81,14 +81,19 @@ public class PlayerStateManager : NetworkBehaviour
         controller = GetComponent<ExampleCharacterController>();
         motor = GetComponent<KinematicCharacterMotor>();
 
-        // Disable non-server controllers to prevent conflicts
-        if (!IsServer)
+        // Disable non-owner controllers to prevent conflicts
+        if (!IsOwner)
         {
             controller.enabled = false;
             motor.enabled = false;
         }
 
-        motor.SetPosition(transform.position);
+        if (IsOwner)
+        {
+            motor.SetPosition(transform.position);
+            netPosition.Value = transform.position;
+            netRotation.Value = transform.rotation;
+        }
 
         if (!IsOwner) return;
 
@@ -111,11 +116,11 @@ public class PlayerStateManager : NetworkBehaviour
     }
 
     /// <summary>
-    /// Updates networked position/rotation for the server each frame.
+    /// Updates networked position/rotation for the owner each frame.
     /// </summary>
     private void LateUpdate()
     {
-        if (!IsServer) return;
+        if (!IsOwner) return;
 
         netPosition.Value = transform.position;
         netRotation.Value = transform.rotation;
@@ -141,23 +146,10 @@ public class PlayerStateManager : NetworkBehaviour
     /// </summary>
     private void ApplyRemoteState()
     {
-        if (IsServer) return;
-
         transform.SetPositionAndRotation(
             Vector3.Lerp(transform.position, netPosition.Value, networkLerpSpeed * Time.deltaTime),
             Quaternion.Slerp(transform.rotation, netRotation.Value, networkLerpSpeed * Time.deltaTime)
         );
-    }
-
-    /// <summary>
-    /// Server RPC called by the owner to submit movement input.
-    /// </summary>
-    /// <param name="move">2D movement vector from input.</param>
-    /// <param name="cameraRotation">Current camera rotation for direction.</param>
-    [ServerRpc]
-    public void SubmitMovementInputServerRpc(Vector2 move, Quaternion cameraRotation)
-    {
-        ApplyMovement(move, cameraRotation);
     }
 
     /// <summary>
@@ -166,8 +158,10 @@ public class PlayerStateManager : NetworkBehaviour
     /// </summary>
     /// <param name="move">2D movement input vector.</param>
     /// <param name="cameraRotation">Rotation of the camera to determine forward direction.</param>
-    private void ApplyMovement(Vector2 move, Quaternion cameraRotation)
+    public void ApplyMovement(Vector2 move, Quaternion cameraRotation)
     {
+        if (!IsOwner) return;
+
         PlayerCharacterInputs inputs = new()
         {
             MoveAxisForward = move.y,
@@ -182,9 +176,10 @@ public class PlayerStateManager : NetworkBehaviour
     /// Changes <see cref="ExampleCharacterController.MaxStableMoveSpeed "/> speed based on the sprinting parameter
     /// </summary>
     /// <param name="sprinting">Whether the player is sprinting or not</param>
-    [ServerRpc]
-    public void SetSprintingServerRpc(bool sprinting)
+    public void SetSprinting(bool sprinting)
     {
+        if (!IsOwner) return;
+
         if (sprinting)
         {
             controller.MaxStableMoveSpeed = Mathf.Lerp(controller.MaxStableMoveSpeed, runningSpeed, sprintAcceleration);
@@ -195,8 +190,7 @@ public class PlayerStateManager : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
-    public void SetCrouchingServerRpc(bool crouching)
+    public void SetCrouching(bool crouching)
     {
 
     }

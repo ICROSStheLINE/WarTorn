@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 /// <summary>
 /// Represents the player's grounded state.
-/// Handles movement input, sends movement data to the server,
+/// Handles movement input, applies owner-authoritative movement,
 /// and updates animations while the player is on the ground.
 /// </summary>
 public class PlayerGroundedState : PlayerBaseState
@@ -54,22 +54,22 @@ public class PlayerGroundedState : PlayerBaseState
 
         Vector2 moveVector = moveAction.ReadValue<Vector2>();
 
-        SendMovementToServer(player, moveVector);
+        ApplyMovementFromInput(player, moveVector);
         bool isSprinting = sprintAction.IsPressed() && moveVector.y > AnimationThreshold && Mathf.Abs(moveVector.x) < AnimationThreshold;
         bool isCrouching = crouchAction.IsPressed();
         // account for sprint in animation
         var animationMoveVector = new Vector2(moveVector.x, isSprinting ? moveVector.y * 2 : moveVector.y);
         UpdateAnimations(player, animationMoveVector, isCrouching);
-        SendSprintingStateToServer(player, isSprinting && !isCrouching);
-        SendCrouchingStateToServer(player, isCrouching);
+        ApplySprintingState(player, isSprinting && !isCrouching);
+        ApplyCrouchingState(player, isCrouching);
     }
 
     /// <summary>
-    /// Sends the player's movement input and target rotation to the server.
+    /// Applies the player's movement input and target rotation locally.
     /// </summary>
     /// <param name="player">The player state manager.</param>
     /// <param name="moveVector">The movement input vector from the player.</param>
-    private void SendMovementToServer(PlayerStateManager player, Vector2 moveVector)
+    private void ApplyMovementFromInput(PlayerStateManager player, Vector2 moveVector)
     {
         if (moveVector.sqrMagnitude < 0.0001f)
         {
@@ -83,8 +83,8 @@ public class PlayerGroundedState : PlayerBaseState
             0f
         );
 
-        // Submit movement input to the server
-        player.SubmitMovementInputServerRpc(moveVector, targetRotation);
+        // Apply movement input locally (owner authoritative)
+        player.ApplyMovement(moveVector, targetRotation);
     }
 
     /// <summary>
@@ -111,13 +111,13 @@ public class PlayerGroundedState : PlayerBaseState
         animator.SetBool("Crouching", crouching);
     }
 
-    private void SendSprintingStateToServer(PlayerStateManager player, bool sprinting)
+    private void ApplySprintingState(PlayerStateManager player, bool sprinting)
     {
-        player.SetSprintingServerRpc(sprinting);
+        player.SetSprinting(sprinting);
     }
 
-    private void SendCrouchingStateToServer(PlayerStateManager player, bool crouching)
+    private void ApplyCrouchingState(PlayerStateManager player, bool crouching)
     {
-        player.SetCrouchingServerRpc(crouching);
+        player.SetCrouching(crouching);
     }
 }
