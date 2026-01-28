@@ -55,13 +55,13 @@ public class PlayerGroundedState : PlayerBaseState
         Vector2 moveVector = moveAction.ReadValue<Vector2>();
 
         ApplyMovementFromInput(player, moveVector);
-        bool isSprinting = sprintAction.IsPressed() && moveVector.y > AnimationThreshold && Mathf.Abs(moveVector.x) < AnimationThreshold;
-        bool isCrouching = crouchAction.IsPressed();
+        bool isAttemptingSprint = sprintAction.IsPressed() && moveVector.y > AnimationThreshold && Mathf.Abs(moveVector.x) < AnimationThreshold;
+        bool isAttemptingCrouch = crouchAction.IsPressed();
         // account for sprint in animation
-        var animationMoveVector = new Vector2(moveVector.x, isSprinting ? moveVector.y * 2 : moveVector.y);
-        UpdateAnimations(player, animationMoveVector, isCrouching);
-        ApplySprintingState(player, isSprinting && !isCrouching);
-        ApplyCrouchingState(player, isCrouching);
+        var animationMoveVector = new Vector2(moveVector.x, isAttemptingSprint ? moveVector.y * 2 : moveVector.y);
+        UpdateAnimations(player, animationMoveVector, isAttemptingCrouch);
+        ApplySprintingState(player, isAttemptingSprint && !isAttemptingCrouch);
+        ApplyCrouchingState(player, isAttemptingCrouch);
     }
 
     /// <summary>

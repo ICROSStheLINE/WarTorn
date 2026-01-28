@@ -34,6 +34,8 @@ public class PlayerStateManager : NetworkBehaviour
     public float movementSpeed = 2f;
     /// <summary>Player running speed in units per second.</summary>
     public float runningSpeed = 8f;
+    /// <summary>Player crouching speed in units per second.</summary>
+    public float crouchingSpeed = 1.5f;
     /// <summary>Sprint acceleration/deceleration</summary>
     public float sprintAcceleration = 0.1f;
 
@@ -43,6 +45,11 @@ public class PlayerStateManager : NetworkBehaviour
 
     /// <summary>Smoothing factor for animation parameter updates.</summary>
     public float animationSmoothing = 0.2f;
+
+    /// <summary> Variable representing whether or not the player is CURRENTLY sprinting (not to be confused with just pressing the sprinting button) </summary>
+    [HideInInspector] public bool isSprinting = false;
+    /// <summary> Variable representing whether or not the player is CURRENTLY crouching (not to be confused with just pressing the crouching button) </summary>
+    [HideInInspector] public bool isCrouching = false;
 
     // --- References ---
     [Header("References")]
@@ -180,6 +187,8 @@ public class PlayerStateManager : NetworkBehaviour
     {
         if (!IsOwner) return;
 
+        isSprinting = sprinting;
+
         if (sprinting)
         {
             controller.MaxStableMoveSpeed = Mathf.Lerp(controller.MaxStableMoveSpeed, runningSpeed, sprintAcceleration);
@@ -192,6 +201,15 @@ public class PlayerStateManager : NetworkBehaviour
 
     public void SetCrouching(bool crouching)
     {
-
+        isCrouching = crouching;
+        
+        if (crouching)
+        {
+            controller.MaxStableMoveSpeed = Mathf.Lerp(controller.MaxStableMoveSpeed, crouchingSpeed, sprintAcceleration);
+        }
+        else
+        {
+            controller.MaxStableMoveSpeed = Mathf.Lerp(controller.MaxStableMoveSpeed, movementSpeed, sprintAcceleration);
+        }
     }
 }
