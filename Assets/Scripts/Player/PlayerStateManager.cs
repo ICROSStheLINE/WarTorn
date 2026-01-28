@@ -47,9 +47,9 @@ public class PlayerStateManager : NetworkBehaviour
     public float animationSmoothing = 0.2f;
 
     /// <summary> Variable representing whether or not the player is CURRENTLY sprinting (not to be confused with just pressing the sprinting button) </summary>
-    [HideInInspector] public bool isSprinting = false;
+    [HideInInspector] public bool IsSprinting { get; set; } = false;
     /// <summary> Variable representing whether or not the player is CURRENTLY crouching (not to be confused with just pressing the crouching button) </summary>
-    [HideInInspector] public bool isCrouching = false;
+    [HideInInspector] public bool IsCrouching { get; set; } = false;
 
     // --- References ---
     [Header("References")]
@@ -187,7 +187,7 @@ public class PlayerStateManager : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        isSprinting = sprinting;
+        IsSprinting = sprinting;
 
         if (sprinting)
         {
@@ -201,7 +201,7 @@ public class PlayerStateManager : NetworkBehaviour
 
     public void SetCrouching(bool crouching)
     {
-        isCrouching = crouching;
+        IsCrouching = crouching;
         
         if (crouching)
         {
