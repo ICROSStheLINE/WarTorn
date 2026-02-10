@@ -54,9 +54,12 @@ public class PlayerStateManager : NetworkBehaviour
     // --- References ---
     [Header("References")]
     [SerializeField] private ThirdPersonCameraController thirdPersonCameraController;
+    [SerializeField] private MinimapController minimapController;
 
     /// <summary>Read-only reference to the third-person camera controller.</summary>
     public ThirdPersonCameraController CameraController => thirdPersonCameraController;
+    /// <summary>Read-only reference to the minimap controller.</summary>
+    public MinimapController MinimapController => minimapController;
 
     [SerializeField] private Animator animator;
 
@@ -106,6 +109,7 @@ public class PlayerStateManager : NetworkBehaviour
 
         // Enable camera and hide cursor for the local player
         thirdPersonCameraController.EnableCamera(true);
+        minimapController.EnableCamera(true);
         Cursor.visible = false;
 
         // Start in grounded state
