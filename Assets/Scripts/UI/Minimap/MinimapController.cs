@@ -7,29 +7,17 @@ public class MinimapController : MonoBehaviour
     /// <summary> Read-only reference to the minimap camera's transform. </summary>
     public Transform CameraTransform => cameraTransform;
 
+    private Camera minimapCamera;
+
     void Start()
     {
-        InvokeRepeating(nameof(RefreshMinimap), 0.0f, 1 / 60.0f);
+        minimapCamera = cameraTransform.GetComponent<Camera>();
+        InvokeRepeating(nameof(RefreshMinimap), 0.0f, 1 / 30.0f);
     }
 
     void RefreshMinimap()
     {
-        RTImage(cameraTransform.GetComponent<Camera>());
-    }
-
-    Texture2D RTImage(Camera camera)
-    {
-        var currentRT = RenderTexture.active;
-        RenderTexture.active = camera.targetTexture;
-
-        camera.Render();
-
-        Texture2D image = new(camera.targetTexture.width, camera.targetTexture.height);
-        image.ReadPixels(new Rect(0, 0, camera.targetTexture.width, camera.targetTexture.height), 0, 0);
-        image.Apply();
-
-        RenderTexture.active = currentRT;
-        return image;
+        minimapCamera.Render();
     }
 
     public void EnableCamera(bool enable)

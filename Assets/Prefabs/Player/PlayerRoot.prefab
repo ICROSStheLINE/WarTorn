@@ -541,6 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9019452c87c21e4c842359a65defb5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChangeRemoteIconColor
+  ShowTopMostFoldoutHeaderGroup: 1
   iconRenderer: {fileID: 6063124005676256831}
   remotePlayerColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &6158892596947125352
@@ -584,7 +585,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6158892596947125352}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 2
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
