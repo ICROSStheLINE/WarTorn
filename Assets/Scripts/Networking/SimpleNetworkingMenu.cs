@@ -35,7 +35,8 @@ public class SimpleNetworkingMenu : MonoBehaviour
     /// </summary>
     private void OnGUI()
     {
-        GUILayout.BeginArea(new Rect(10, 10, 300, 300));
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
 
         // If networking has not started yet, show start buttons
         if (!m_NetworkManager.IsClient && !m_NetworkManager.IsServer)
@@ -48,7 +49,7 @@ public class SimpleNetworkingMenu : MonoBehaviour
             StatusLabels();
         }
 
-        GUILayout.EndArea();
+        GUILayout.EndHorizontal();
     }
 
     /// <summary>
