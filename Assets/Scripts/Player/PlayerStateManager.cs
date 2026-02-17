@@ -55,11 +55,14 @@ public class PlayerStateManager : NetworkBehaviour
     [Header("References")]
     [SerializeField] private ThirdPersonCameraController thirdPersonCameraController;
     [SerializeField] private MinimapController minimapController;
+    [SerializeField] private InventoryController inventoryController;
 
     /// <summary>Read-only reference to the third-person camera controller.</summary>
     public ThirdPersonCameraController CameraController => thirdPersonCameraController;
     /// <summary>Read-only reference to the minimap controller.</summary>
     public MinimapController MinimapController => minimapController;
+    /// <summary>Read-only reference to the player's inventory controller.</summary>
+    public InventoryController InventoryController => inventoryController;
 
     [SerializeField] private Animator animator;
 
@@ -100,6 +103,7 @@ public class PlayerStateManager : NetworkBehaviour
 
         if (IsOwner)
         {
+            LocalPlayerRegistry.Register(this);
             motor.SetPosition(transform.position);
             netPosition.Value = transform.position;
             netRotation.Value = transform.rotation;
@@ -206,7 +210,7 @@ public class PlayerStateManager : NetworkBehaviour
     public void SetCrouching(bool crouching)
     {
         IsCrouching = crouching;
-        
+
         if (crouching)
         {
             controller.MaxStableMoveSpeed = Mathf.Lerp(controller.MaxStableMoveSpeed, crouchingSpeed, sprintAcceleration);

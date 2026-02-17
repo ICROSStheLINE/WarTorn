@@ -195,7 +195,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -310,6 +310,7 @@ GameObject:
   - component: {fileID: 41538670}
   - component: {fileID: 41538672}
   - component: {fileID: 41538671}
+  - component: {fileID: 41538673}
   m_Layer: 5
   m_Name: CurrentItem
   m_TagString: Untagged
@@ -356,7 +357,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b2495f3b9f1cff74cabf00d0b6823efe, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -374,6 +375,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 41538669}
   m_CullTransparentMesh: 1
+--- !u!114 &41538673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41538669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1e8f3bd17aa01449798aea28702e56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  itemIcon: {fileID: 41538671}
 --- !u!1 &88090084
 GameObject:
   m_ObjectHideFlags: 0

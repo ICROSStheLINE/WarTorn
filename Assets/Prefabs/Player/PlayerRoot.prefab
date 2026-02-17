@@ -206,6 +206,7 @@ Transform:
   - {fileID: 7546938192292744989}
   - {fileID: 261574603262594845}
   - {fileID: 7373490655220799801}
+  - {fileID: 107007525504135035}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4175787416208919820
@@ -220,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1671726548
+  GlobalObjectIdHash: 814907957
   InScenePlacedSourceGlobalObjectIdHash: 814907957
   DeferredDespawnTick: 0
   Ownership: 1
@@ -363,10 +364,9 @@ MonoBehaviour:
   sprintAcceleration: 0.1
   rotationSmoothing: 0.2
   animationSmoothing: 0.02
-  isSprinting: 0
-  isCrouching: 0
   thirdPersonCameraController: {fileID: 8273387697158327127}
   minimapController: {fileID: 5671964363096646249}
+  inventoryController: {fileID: 3177487462634003009}
   animator: {fileID: 1554556044101166853}
   netPosition:
     m_InternalValue: {x: 0, y: 0, z: 0}
@@ -438,6 +438,54 @@ Transform:
   - {fileID: 2033209862419754937}
   m_Father: {fileID: 8350502058208648977}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5351140594637333732
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 107007525504135035}
+  - component: {fileID: 3177487462634003009}
+  m_Layer: 0
+  m_Name: InventoryManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &107007525504135035
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5351140594637333732}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8350502058208648977}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3177487462634003009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5351140594637333732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 888bf8d215485df4090d18f083db163f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  ShowTopMostFoldoutHeaderGroup: 1
+  Inventory:
+    items:
+    - {fileID: 11400000, guid: b4177acc9d84a1d42a4c3cf3e1b47b0e, type: 2}
 --- !u!1 &6014564814338184324
 GameObject:
   m_ObjectHideFlags: 0
